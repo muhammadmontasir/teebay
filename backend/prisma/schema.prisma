@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  user_name  String
+  email      String    @unique
+  password   String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+  created_by Int?
+  updated_by Int?
+
+  products    Product[] @relation("OwnerProducts")
+  possessions Product[] @relation("Possessions")
+}
+
+model Product {
+  id                    Int                  @id @default(autoincrement())
+  title                 String
+  product_category_id   Int
+  description           String?
+  status                ProductStatus        @default(AVAILABLE)
+  purchase_price        Float?
+  rent_price            Float?
+  rent_type             RentType?
+  owner_id              Int
+  current_possession_id Int
+  created_at            DateTime             @default(now())
+  updated_at            DateTime             @updatedAt
+  deleted_at            DateTime?
+  created_by            Int?
+  updated_by            Int?
+
+  owner                 User                 @relation("OwnerProducts", fields: [owner_id], references: [id])
+  current_possession    User                 @relation("Possessions", fields: [current_possession_id], references: [id])
+  category              CategoryProductType  @relation(fields: [product_category_id], references: [id])
+}
+
+model CategoryProductType {
+  id         Int       @id @default(autoincrement())
+  value      String    @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  created_by Int?
+  updated_by Int?
+
+  products   Product[]
+}
+
+enum ProductStatus {
+  SOLD
+  RENTED
+  BORROWED
+  AVAILABLE
+  BOUGHT
+}
+
+enum RentType {
+  PER_DAY
+  WEEKLY
+  FORTNIGHTLY
+  MONTHLY
+  YEARLY
+}
