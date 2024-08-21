@@ -4,9 +4,37 @@ export const typeDefs = gql`
   scalar Date
   
   type Query {
+    me: User
     users: [User!]!
     products: [Product!]!
     categories: [CategoryProductType!]!
+  }
+  
+  type Mutation {
+    signUp(user_name: String!, email: String!, password: String!): User!
+    login(email: String!, password: String!): User!
+    signOut: Boolean!
+    addProduct(
+      title: String!
+      product_category_id: Int!
+      description: String
+      status: ProductStatus
+      purchase_price: Float
+      rent_price: Float
+      rent_type: RentType
+      owner_id: Int!
+    ): Product!
+    editProduct(
+      id: Int!
+      title: String
+      product_category_id: Int
+      description: String
+      status: ProductStatus
+      purchase_price: Float
+      rent_price: Float
+      rent_type: RentType
+    ): Product!
+    deleteProduct(id: Int!): Boolean!
   }
 
   type User {
@@ -15,6 +43,7 @@ export const typeDefs = gql`
     email: String!
     products: [Product!]!
     possessions: [Product!]!
+    token: String
   }
 
   type Product {

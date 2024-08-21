@@ -12,6 +12,7 @@ model User {
   user_name  String
   email      String    @unique
   password   String
+  token      String?
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
@@ -20,6 +21,17 @@ model User {
 
   products    Product[] @relation("OwnerProducts")
   possessions Product[] @relation("Possessions")
+}
+
+model CategoryProductType {
+  id         Int       @id @default(autoincrement())
+  value      String    @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  created_by Int?
+  updated_by Int?
+
+  products   Product[]
 }
 
 model Product {
@@ -42,17 +54,6 @@ model Product {
   owner                 User                 @relation("OwnerProducts", fields: [owner_id], references: [id])
   current_possession    User                 @relation("Possessions", fields: [current_possession_id], references: [id])
   category              CategoryProductType  @relation(fields: [product_category_id], references: [id])
-}
-
-model CategoryProductType {
-  id         Int       @id @default(autoincrement())
-  value      String    @unique
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  created_by Int?
-  updated_by Int?
-
-  products   Product[]
 }
 
 enum ProductStatus {

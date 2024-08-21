@@ -23,6 +23,7 @@ async function main() {
             user_name: 'Alice',
             email: 'alice@example.com',
             password: 'password123',
+            token: ''
         },
     });
 
@@ -31,6 +32,7 @@ async function main() {
             user_name: 'Bob',
             email: 'bob@example.com',
             password: 'password123',
+            token: ''
         },
     });
 
@@ -39,6 +41,7 @@ async function main() {
             user_name: 'Charlie',
             email: 'charlie@example.com',
             password: 'password123',
+            token: ''
         },
     });
 

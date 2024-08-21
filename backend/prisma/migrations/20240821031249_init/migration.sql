@@ -10,6 +10,7 @@ CREATE TABLE "User" (
     "user_name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "token" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "deleted_at" TIMESTAMP(3),
@@ -17,6 +18,18 @@ CREATE TABLE "User" (
     "updated_by" INTEGER,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "CategoryProductType" (
+    "id" SERIAL NOT NULL,
+    "value" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+    "created_by" INTEGER,
+    "updated_by" INTEGER,
+
+    CONSTRAINT "CategoryProductType_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -38,18 +51,6 @@ CREATE TABLE "Product" (
     "updated_by" INTEGER,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "CategoryProductType" (
-    "id" SERIAL NOT NULL,
-    "value" TEXT NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL,
-    "created_by" INTEGER,
-    "updated_by" INTEGER,
-
-    CONSTRAINT "CategoryProductType_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
