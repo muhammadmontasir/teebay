@@ -1,51 +1,71 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { InputText } from 'primereact/inputtext';
 import { MultiSelect } from 'primereact/multiselect';
 import { Button } from 'primereact/button';
-import { Textarea } from 'primereact/textarea';
+import { InputTextarea } from 'primereact/inputtextarea';
 import { Dropdown } from 'primereact/dropdown';
-import { useQuery } from '@apollo/client';
-// Interface
-interface Product {
-    id: number;
-    title: string;
-    categories: string[];
-    price: string;
-    rentPrice?: string;
-    rentType?: string;
-    description: string;
-    createdAt: string;
-    views: number;
-}
+import { useApolloClient, useQuery } from '@apollo/client';
 
 import { gql } from '@apollo/client';
 
 const GET_PRODUCT_BY_ID = gql`
-  query GetProductById($id: ID!) {
-    product(id: $id) {
+  query GetProductById($id: Int!) {
+    getProductById(id: $id) {
       id
       title
-      categories
-      price
-      rentPrice
-      rentType
+      category {
+        value
+      }
+      purchase_price
+      rent_price
+      rent_type
       description
-      createdAt
-      views
+      created_at
     }
+  }
+`;
+
+const CATEGORIES = gql`
+  query Categories {
+    categories {
+      id
+      value
+    }
+  }
+`;
+
+const RENTTYPES = gql`
+  query GetAllRentType {
+    getAllRentType
   }
 `;
 
 // Main Component
 const EditProduct = () => {
-    const { id } = useParams(); // Get product ID from route params
+    const client = useApolloClient();
+    const { id } = useParams();
 
     const { loading, error, data } = useQuery(GET_PRODUCT_BY_ID, {
-        variables: { id },
+        variables: { id: +id },
     });
 
-    const [product, setProduct] = useState<Product>({
+    const { loading: loadingCategory, error: errorCategory, data: dataCategory } = useQuery(CATEGORIES, {
+        onCompleted: (data) => {
+            client.readQuery({
+                query: CATEGORIES,
+            });
+        },
+    });
+
+    const { loading: loadingRentTypes, error: errorRentTypes, data: dataRentTypes } = useQuery(RENTTYPES, {
+        onCompleted: (data) => {
+            client.readQuery({
+                query: RENTTYPES,
+            });
+        },
+    });
+
+    const [product, setProduct] = useState({
         id: 0,
         title: '',
         categories: [],
@@ -71,6 +91,8 @@ const EditProduct = () => {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
 
+    console.log(dataCategory);
+
     return (
         <div className="flex justify-center items-center min-h-[800px] min-w-[800px]">
             <div className="flex flex-col gap-2">
@@ -79,7 +101,7 @@ const EditProduct = () => {
                     <label htmlFor="title" className="text-xl text-slate-800 pb-2">
                         Title
                     </label>
-                    <InputText
+                    <InputTextarea
                         id="title"
                         value={product.title}
                         onChange={(e) => setProduct({ ...product, title: e.target.value })}
@@ -93,16 +115,16 @@ const EditProduct = () => {
                     <label htmlFor="categories" className="text-xl text-slate-800 pb-2">
                         Categories
                     </label>
-                    <MultiSelect
-                        value={product.categories}
-                        options={categoryStore.categories} // Adjust this to fetch categories from Apollo if needed
-                        onChange={(e) => setProduct({ ...product, categories: e.value })}
-                        optionLabel="name"
-                        filter
-                        maxSelectedLabels={3}
-                        className="w-full md:w-80"
-                        style={{ width: '300px' }}
-                    />
+                    {/*<MultiSelect*/}
+                    {/*    value={product.categories}*/}
+                    {/*    options={dataCategory} // Adjust this to fetch categories from Apollo if needed*/}
+                    {/*    onChange={(e) => setProduct({ ...product, categories: e.value })}*/}
+                    {/*    optionLabel="name"*/}
+                    {/*    filter*/}
+                    {/*    maxSelectedLabels={3}*/}
+                    {/*    className="w-full md:w-80"*/}
+                    {/*    style={{ width: '300px' }}*/}
+                    {/*/>*/}
                 </div>
 
                 {/* Description Field */}
@@ -110,7 +132,7 @@ const EditProduct = () => {
                     <label htmlFor="description" className="text-xl text-slate-800 pb-2">
                         Description
                     </label>
-                    <Textarea
+                    <InputTextarea
                         rows={7}
                         cols={70}
                         value={product.description}
@@ -125,7 +147,7 @@ const EditProduct = () => {
                         <label htmlFor="price" className="text-xl text-slate-800 pb-2">
                             Price
                         </label>
-                        <InputText
+                        <InputTextarea
                             id="price"
                             value={product.price}
                             onChange={(e) => setProduct({ ...product, price: e.target.value })}
@@ -139,7 +161,7 @@ const EditProduct = () => {
                         <label htmlFor="rentPrice" className="text-xl text-slate-800 pb-2">
                             Rent Price
                         </label>
-                        <InputText
+                        <InputTextarea
                             id="rentPrice"
                             value={product.rentPrice}
                             onChange={(e) => setProduct({ ...product, rentPrice: e.target.value })}
@@ -152,7 +174,7 @@ const EditProduct = () => {
                     <div className="flex items-end">
                         <Dropdown
                             value={product.rentType}
-                            options={categoryStore.rentTypeCategories} // Adjust this to fetch rent type categories from Apollo if needed
+                            options={dataRentTypes.getAllRentType.map((type) => ({ label: type, value: type }))}
                             onChange={(e) => setProduct({ ...product, rentType: e.value })}
                             optionLabel="name"
                             className="w-full md:w-56"

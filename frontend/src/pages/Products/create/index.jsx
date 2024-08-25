@@ -1,23 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import MultiPageForm from '../../../components/MultiPageForm.js';
+import MultiPageForm from '../../../components/MultiPageForm.jsx';
 
-// Interface for the Product type
-interface Product {
-    title: string;
-    categories: string[];
-    price: string;
-    rentPrice?: string;
-    rentType?: string;
-    description: string;
-    createdAt: string;
-    views: number;
-}
-
-const CreateProduct: React.FC = () => {
+const CreateProduct = () => {
     const navigate = useNavigate();
 
-    const onSubmit = (product: Product) => {
+    const onSubmit = (product) => {
         console.log(product);
         // You might want to navigate or do something else after the submission
         // navigate('/products'); // For example, redirect to the products list
