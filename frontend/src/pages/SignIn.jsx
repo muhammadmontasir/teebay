@@ -49,7 +49,7 @@ const Login = () => {
                     </div>
                     <div className="flex justify-center">
                         Do you have an account?{" "}
-                        <Link to="/signUp" className="pl-2 text-blue-500">
+                        <Link to="/sign-up" className="pl-2 text-blue-500">
                             Sign up
                         </Link>
                     </div>

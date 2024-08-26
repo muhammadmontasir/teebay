@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Link } from 'react-router-dom';
-import './YourStyles.css'; // Assuming you have a CSS file for styles
+
 
 const Signupform = ({ initialData, onRegister }) => {
     const [formData, setFormData] = useState({
