@@ -7,7 +7,9 @@ export const typeDefs = gql`
     me: User
     users: [User!]!
     products: [Product!]!
+    getProductById(id: Int!): Product
     categories: [CategoryProductType!]!
+    getAllRentType: [RentType]!
   }
   
   type Mutation {
@@ -57,6 +59,7 @@ export const typeDefs = gql`
     owner: User!
     current_possession: User!
     category: CategoryProductType!
+    created_at: Date!
   }
 
   type CategoryProductType {
