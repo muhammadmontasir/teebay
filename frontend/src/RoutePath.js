@@ -1,7 +1,9 @@
 const RoutePaths = {
-    Home: '/home',
-    Login: '/login',
-    About: '/about',
-}
+    Login: '/',
+    SignUp: '/sign-up',
+    CreateProduct: '/products/create',
+    EditProduct: '/products/edit/:id',
+    ProductList: '/products/list',
+};
 
 export default RoutePaths;

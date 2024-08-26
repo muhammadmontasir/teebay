@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "proxy": "http://localhost:4000/graphql/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -11,6 +12,13 @@
   },
   "dependencies": {
     "@apollo/client": "^3.11.4",
+    "@mantine/core": "^7.12.1",
+    "@mantine/dates": "^7.12.1",
+    "@mantine/form": "^7.12.1",
+    "@mantine/hooks": "^7.12.1",
+    "@mantine/modals": "^7.12.1",
+    "@mantine/notifications": "^7.12.1",
+    "dayjs": "^1.11.13",
     "graphql": "^16.9.0",
     "primereact": "^10.8.2",
     "react": "^18.3.1",

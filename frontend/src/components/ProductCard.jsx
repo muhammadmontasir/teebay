@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Modal from './Modal';
+import Modal from './Modal.jsx';
 
 const ProductCard = ({ product, onDelete }) => {
     const [seeMore, setSeeMore] = useState(false);
@@ -9,7 +9,7 @@ const ProductCard = ({ product, onDelete }) => {
         ? product.description.slice(0, 100) + "..."
         : product.description;
 
-    const formattedCategories = product.categories.join(", ");
+    const formattedCategories = product?.category.value;
 
     const seeValue = seeMore ? "See Less" : "See More";
 
